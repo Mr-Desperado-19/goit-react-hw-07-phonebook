@@ -1,18 +1,25 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 import {
   StyledContactList,
+  StyledContactText,
   StyledContactsItem,
   StyledDeleteBtn,
   StyledNumber,
 } from './ContactList.styled';
 import { MdClose } from 'react-icons/md';
-import { getContacts, getFilter } from 'redux/selectors';
-import { deleteContact } from 'redux/contactsSlice';
+import { selectContacts, selectFilter } from 'redux/selectors';
+import { deleteContact, fetchContacts } from 'redux/operations';
+import { GiSmartphone } from 'react-icons/gi';
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const normalizedFilter = filter.toLowerCase();
   const filtredContacts = contacts.filter(
@@ -20,20 +27,19 @@ export const ContactList = () => {
       contact.name && contact.name.toLowerCase().includes(normalizedFilter)
   );
 
-  const deleteContactfromList = id => {
-    dispatch(deleteContact(id));
-  };
+  const handleDelete = id => dispatch(deleteContact(id));
 
   return (
     <StyledContactList>
       {filtredContacts.map(contact => {
         return (
           <StyledContactsItem key={contact.id}>
-            <p>
-              {contact.name}
-              <StyledNumber>{contact.number}</StyledNumber>
-            </p>
-            <StyledDeleteBtn onClick={() => deleteContactfromList(contact.id)}>
+            <StyledContactText>{contact.name}</StyledContactText>
+            <StyledNumber>
+              <GiSmartphone />
+              {contact.phone}
+            </StyledNumber>
+            <StyledDeleteBtn onClick={() => handleDelete(contact.id)}>
               <MdClose />
             </StyledDeleteBtn>
           </StyledContactsItem>
