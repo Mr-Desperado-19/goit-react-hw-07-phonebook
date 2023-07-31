@@ -31,8 +31,8 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const checkContact = values => {
-    const contactsArray = contacts.filter(
-      contact => contact.name === values.name
+  const contactsArray = contacts.filter(
+      contact => contact.name.toLowerCase().trim() === values.name.toLowerCase().trim()
     );
     return contactsArray.length !== 0;
   };
