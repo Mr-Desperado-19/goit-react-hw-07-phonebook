@@ -19,8 +19,10 @@ export const StyledFilterTextWrap = styled.div`
     right: 10px;
   }
 `;
+
 export const StyledInput = styled.input`
   height: 30px;
   width: 250px;
-  padding: 0 5px;
+  padding-left: 5px;
+  padding-right: 40px;
 `;
